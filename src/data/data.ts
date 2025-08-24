@@ -34,8 +34,8 @@ export const navs = [
 export const scis = [
   {
     id: 1,
-    icon: 'bi-facebook',
-    link: '',
+    icon: 'bi-linkedin',
+    link: 'https://www.linkedin.com/in/heydawood/',
   },
   {
     id: 2,
