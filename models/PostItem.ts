@@ -4,7 +4,7 @@ const postItemSchema = new mongoose.Schema({
 
     img: { type: String, required: true },
     category: { type: String, required: true },
-    data: { type: Date, default: Date.now },
+    date: { type: Date, default: Date.now },
     title: { type: String, required: true },
     brief: { type: String, default: null },
     avatar: { type: String, default: null },
