@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import "./posts.css";
 import PostItemOne from "@/components/PostItemOne";
 import TrendingPost from "@/components/TrendingPost";
+import Preloader from "@/components/Preloader";
 
 const Posts = () => {
   const router = useRouter();
@@ -19,122 +20,129 @@ const Posts = () => {
       .catch((e) => console.log(e.message));
   };
 
-
-  const getSinglePostData = async(id: string) => {
+  const getSinglePostData = async (id: string) => {
     fetch(`/api/postitems/${id}`)
-    .then(res=>{
-      if(res.status === 404){
-        router.push('/not-found')
-      }
-      return res.json()
-    })
-    .then(data => setItem(data))
-    .catch(e=> console.log(e.message))
-  }
+      .then((res) => {
+        if (res.status === 404) {
+          router.push("/not-found");
+        }
+        return res.json();
+      })
+      .then((data) => setItem(data))
+      .catch((e) => console.log(e.message));
+  };
 
   useEffect(() => {
     getItemsData();
-    getSinglePostData('68acfb375f17c776597dc76b');
+    getSinglePostData("68acfb375f17c776597dc76b");
   }, []);
-
 
   return (
     <section id="posts" className="posts">
       <div className="container" data-aos="fade-up">
-
         <div className="row g-5">
-
           <div className="col-lg-4">
             <PostItemOne large={true} item={item} />
           </div>
 
           <div className="col-lg-8">
-
             <div className="row g-5">
-
               <div className="col-lg-4 border-start custom-border">
-                {items &&
-                  items.length > 0 &&
-                  items.filter((item:{trending: boolean; top: boolean})=> !item.trending && !item.top)
-                  .slice(0, 3)
-                  .map(
-                    (item: {
-                      item: {
-                        _id: string;
-                        img: string;
-                        category: string;
-                        date: string;
-                        title: string;
-                        brief: string;
-                        avatar: string;
-                        author: string;
-                      };
-                    }) => (
-                      <PostItemOne key={item._id} large={false} item={item} />
+                {items && items.length > 0 ? (
+                  items
+                    .filter(
+                      (item: { trending: boolean; top: boolean }) =>
+                        !item.trending && !item.top
                     )
-                  )}
+                    .slice(0, 3)
+                    .map(
+                      (item: {
+                        item: {
+                          _id: string;
+                          img: string;
+                          category: string;
+                          date: string;
+                          title: string;
+                          brief: string;
+                          avatar: string;
+                          author: string;
+                        };
+                      }) => (
+                        <PostItemOne key={item._id} large={false} item={item} />
+                      )
+                    )
+                ) : (
+                  <Preloader />
+                )}
               </div>
 
               <div className="col-lg-4 border-start custom-border">
-
-                 {items &&
-                  items.length > 0 &&
-                  items.filter((item:{trending: boolean; top: boolean})=> !item.trending && !item.top)
-                  .slice(3, 6)
-                  .map(
-                    (item: {
-                      item: {
-                        _id: string;
-                        img: string;
-                        category: string;
-                        date: string;
-                        title: string;
-                        brief: string;
-                        avatar: string;
-                        author: string;
-                      };
-                    }) => (
-                      <PostItemOne key={item._id} large={false} item={item} />
+                {items && items.length > 0 ? (
+                  items
+                    .filter(
+                      (item: { trending: boolean; top: boolean }) =>
+                        !item.trending && !item.top
                     )
-                  )}
-
+                    .slice(3, 6)
+                    .map(
+                      (item: {
+                        item: {
+                          _id: string;
+                          img: string;
+                          category: string;
+                          date: string;
+                          title: string;
+                          brief: string;
+                          avatar: string;
+                          author: string;
+                        };
+                      }) => (
+                        <PostItemOne key={item._id} large={false} item={item} />
+                      )
+                    )
+                ) : (
+                  <Preloader />
+                )}
               </div>
               <div className="col-lg-4">
-
                 <div className="trending">
                   <h3>Trending</h3>
 
                   <ul className="trending-post">
-                    {
-                      items && items.length>0
-                      && items.filter((item:{trending: boolean})=> item.trending)
-                      .map((item: {
-                        _id: string;
-                        img: string;
-                        category: string;
-                        date: string;
-                        title: string;
-                        brief: string;
-                        avatar: string;
-                        author: string;
-                      }, index: number) =>(
-                        <TrendingPost key={item._id} index={index} item={item}/>
-                      ))
-                    }
+                    {items && items.length > 0 ? (
+                      items
+                        .filter((item: { trending: boolean }) => item.trending)
+                        .map(
+                          (
+                            item: {
+                              _id: string;
+                              img: string;
+                              category: string;
+                              date: string;
+                              title: string;
+                              brief: string;
+                              avatar: string;
+                              author: string;
+                            },
+                            index: number
+                          ) => (
+                            <TrendingPost
+                              key={item._id}
+                              index={index}
+                              item={item}
+                            />
+                          )
+                        )
+                    ) : (
+                      <Preloader />
+                    )}
                   </ul>
-
                 </div>
-
               </div>
-
             </div>
-
           </div>
-
         </div>
-
       </div>
-
     </section>
   );
 };
